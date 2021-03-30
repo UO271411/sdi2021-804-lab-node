@@ -33,7 +33,7 @@ module.exports = function(app, swig) {
         res.send(respuesta);
     });
     app.get("/autores/filtrar/:rol", function(req, res) {
-        var rol = req.params.rol;
+        let rol = req.params.rol;
         let autores = [ {
             "nombre" : "Tony Banks",
             "grupo" : "Genesis",
@@ -64,11 +64,11 @@ module.exports = function(app, swig) {
         let nombre = "Autor agregado: "+req.body.nombre;
         let grupo = " grupo: " +req.body.grupo;
         let rol = " rol: "+req.body.rol;
-        if(nombre=="Autor agregado: ")
+        if(nombre==="Autor agregado: ")
             nombre = "Nombre no enviado en la petición.";
-        if(grupo==" grupo: ")
+        if(grupo===" grupo: ")
             grupo = "Grupo no enviado en la petición.";
-        if(rol==" rol: ")
+        if(rol===" rol: ")
             rol = "Rol no enviado en la petición.";
         res.send( nombre + "<br>" + grupo + "<br>" + rol);
     });
