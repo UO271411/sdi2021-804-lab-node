@@ -1,7 +1,8 @@
 module.exports = function(app, swig) {
     app.get('/autores/agregar', function (req, res) {
+        let roles = [ "Teclista", "Batería", "Guitarrista", "Cantante", "Bajista",]
         let respuesta = swig.renderFile('views/autores-agregar.html', {
-
+            roles: roles
         });
         res.send(respuesta);
     })
