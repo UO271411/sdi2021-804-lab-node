@@ -32,25 +32,31 @@
 				<h4 class="media-heading">{{ comentario.autor }}</h4>
 				  {{ comentario.texto }}
 			  </div>
+			  <div>
+				  <td>
+					  <a href="/comentarios/borrar/{{ comentario._id.toString() }}">Borrar</a> <br>
+				  </td>
+			  </div>
 		  </div>
 		 {% endfor %}
 		 <!-- Fin del Bloque comentario -->
 	  </div>
 
 	<!-- Formulario -->
-<h2>Agregar comentario</h2>
-<form class="form-horizontal" method="post" action="/comentarios/{{ cancion._id.toString() }}" encType="multipart/form-data">
-	<div class="form-group">
-		<label class="control-label col-sm-2" for="texto">Texto:</label>
-		<div class="col-sm-10">
-			<input id="texto" type="text" class="form-control" name="texto"
-				   placeholder="Escriba aquí su comentario" required="true" />
+	<h2>Agregar comentario</h2>
+	<form class="form-horizontal" method="post" action="/comentarios/{{ cancion._id.toString() }}" encType="multipart/form-data">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="texto">Texto:</label>
+			<div class="col-sm-10">
+				<input id="texto" type="text" class="form-control" name="texto"
+					   placeholder="Escriba aquí su comentario" required="true" />
+			</div>
 		</div>
-	</div>
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			<button type="submit" class="btn btn-primary">Enviar</button>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">Enviar</button>
+			</div>
 		</div>
-	</div>
-</form>
+	</form>
+	<!-- Fin del formulario -->
 {% endblock %}

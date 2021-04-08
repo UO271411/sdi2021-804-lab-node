@@ -19,4 +19,23 @@ module.exports = function(app, swig, gestorBD) {
             });
         }
     });
+    app.get('/comentarios/borrar/:id', function (req, res) {
+        let criterio = { "_id" : gestorBD.mongo.ObjectID(req.params.id) };
+        gestorBD.obtenerComentarios(criterio,function(comentarios) {
+            if (comentarios == null) {
+                res.send("Comentario no encontrado");
+            } else {
+                if(comentarios[0] == null){
+                    res.send("El comentario especificado no existe");
+                }
+                else  if (req.session.usuario != comentarios[0].autor) {
+                    res.send("No tiene permiso para borrar este comentario");
+                } else {
+                    gestorBD.borrarComentario(criterio, function (comentarios) {
+                        res.send("Comentario borrado");
+                    });
+                }
+            }
+        });
+    });
 };
