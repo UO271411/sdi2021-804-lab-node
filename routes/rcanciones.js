@@ -1,15 +1,8 @@
 module.exports = function(app, swig, gestorBD) {
     app.get('/canciones/agregar', function (req, res) {
-        /*
-        if ( req.session.usuario == null){
-            res.redirect("/tienda");
-            return;
-        }
-        */
-
         let respuesta = swig.renderFile('views/bagregar.html', { });
         res.send(respuesta);
-    })
+    });
     app.get('/suma', function(req, res) {
         parseInt(req.query.num1) + parseInt(req.query.num2);
         res.send(String(respuesta));
@@ -43,13 +36,7 @@ module.exports = function(app, swig, gestorBD) {
         });
     });
     app.post("/cancion", function(req, res) {
-        /*
-        if ( req.session.usuario == null){
-            res.redirect("/tienda");
-            return;
-        }
-         */
-        var cancion = {
+        let cancion = {
             nombre : req.body.nombre,
             genero : req.body.genero,
             precio : req.body.precio,
@@ -61,7 +48,7 @@ module.exports = function(app, swig, gestorBD) {
                 res.send("Error al insertar canción");
             } else {
                 if (req.files.portada != null) {
-                    var imagen = req.files.portada;
+                    let imagen = req.files.portada;
                     imagen.mv('public/portadas/' + id + '.png', function(err) {
                         if (err) {
                             res.send("Error al subir la portada");
@@ -116,6 +103,16 @@ module.exports = function(app, swig, gestorBD) {
                     }
                 });
 
+            }
+        });
+    });
+    app.get('/cancion/eliminar/:id', function (req, res) {
+        let criterio = {"_id" : gestorBD.mongo.ObjectID(req.params.id) };
+        gestorBD.eliminarCancion(criterio,function(canciones){
+            if ( canciones == null ){
+                res.send(respuesta);
+            } else {
+                res.redirect("/publicaciones");
             }
         });
     });
