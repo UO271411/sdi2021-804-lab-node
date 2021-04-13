@@ -21,7 +21,11 @@ module.exports = function(app, swig, gestorBD) {
 
         gestorBD.obtenerCanciones(criterio,function(canciones){
             if ( canciones == null ){
-                res.send("Error al recuperar la canción.");
+                let respuesta = swig.renderFile('views/error.html',
+                    {
+                        texto : "Error al recuperar la canción."
+                    });
+                res.send(respuesta);
             } else {
                 criterio = { "cancion_id" :  gestorBD.mongo.ObjectID(req.params.id) };
                 gestorBD.obtenerComentarios(criterio,function(comentarios){
@@ -30,7 +34,11 @@ module.exports = function(app, swig, gestorBD) {
 
                     gestorBD.obtenerCompras(criterio, function (compras) {
                         if (compras == null) {
-                            res.send("Error al listar ");
+                            let respuesta = swig.renderFile('views/error.html',
+                                {
+                                    texto : "Error al listar."
+                                });
+                            res.send(respuesta);
                         } else {
                             if(propietario(req, canciones, compras)) {
                                 respuesta = swig.renderFile('views/bcancion.html',
@@ -64,19 +72,31 @@ module.exports = function(app, swig, gestorBD) {
         // Conectarse
         gestorBD.insertarCancion(cancion, function(id){
             if (id == null) {
-                res.send("Error al insertar canción");
+                let respuesta = swig.renderFile('views/error.html',
+                    {
+                        texto : "Error al insertar canción."
+                    });
+                res.send(respuesta);
             } else {
                 if (req.files.portada != null) {
                     let imagen = req.files.portada;
                     imagen.mv('public/portadas/' + id + '.png', function(err) {
                         if (err) {
-                            res.send("Error al subir la portada");
+                            let respuesta = swig.renderFile('views/error.html',
+                                {
+                                    texto : "Error al subir la portada."
+                                });
+                            res.send(respuesta);
                         } else {
                             if (req.files.audio != null) {
                                 let audio = req.files.audio;
                                 audio.mv('public/audios/'+id+'.mp3', function(err) {
                                     if (err) {
-                                        res.send("Error al subir el audio");
+                                        let respuesta = swig.renderFile('views/error.html',
+                                            {
+                                                texto : "Error al subir el audio."
+                                            });
+                                        res.send(respuesta);
                                     } else {
                                         res.redirect("/publicaciones");
                                     }
@@ -112,11 +132,19 @@ module.exports = function(app, swig, gestorBD) {
         }
         gestorBD.modificarCancion(criterio, cancion, function(result) {
             if (result == null) {
-                res.send("Error al modificar ");
+                let respuesta = swig.renderFile('views/error.html',
+                    {
+                        texto : "Error al modificar"
+                    });
+                res.send(respuesta);
             } else {
                 paso1ModificarPortada(req.files, id, function (result) {
                     if( result == null){
-                        res.send("Error en la modificación");
+                        let respuesta = swig.renderFile('views/error.html',
+                            {
+                                texto : "Error en la modificación"
+                            });
+                        res.send(respuesta);
                     } else {
                         res.redirect("/publicaciones");
                     }
@@ -149,10 +177,18 @@ module.exports = function(app, swig, gestorBD) {
                 let criterio2 = {"usuario": req.session.usuario};
                 gestorBD.obtenerCompras(criterio2, function (compras) {
                     if (compras == null) {
-                        res.send("Error al listar ");
+                        let respuesta = swig.renderFile('views/error.html',
+                            {
+                                texto : "Error al listar"
+                            });
+                        res.send(respuesta);
                     } else {
                         if (propietario(req, canciones, compras)) {
-                            res.send("Usted no puede comprar una canción que ya le pertenece");
+                            let respuesta = swig.renderFile('views/error.html',
+                                {
+                                    texto : "Usted no puede comprar una canción que ya le pertenece"
+                                });
+                            res.send(respuesta);
                         } else {
                             gestorBD.insertarCompra(compra, function (idCompra) {
                                 if (idCompra == null) {
@@ -172,7 +208,11 @@ module.exports = function(app, swig, gestorBD) {
 
         gestorBD.obtenerCompras(criterio, function (compras) {
             if (compras == null) {
-                res.send("Error al listar ");
+                let respuesta = swig.renderFile('views/error.html',
+                    {
+                        texto : "Error al listar"
+                    });
+                res.send(respuesta);
             } else {
                 let cancionesCompradasIds = [];
                 for (i = 0; i < compras.length; i++) {
@@ -229,7 +269,11 @@ module.exports = function(app, swig, gestorBD) {
         }
         gestorBD.obtenerCancionesPg(criterio, pg , function(canciones, total ) {
             if (canciones == null) {
-                res.send("Error al listar ");
+                let respuesta = swig.renderFile('views/error.html',
+                    {
+                        texto : "Error al listar"
+                    });
+                res.send(respuesta);
             } else {
                 let ultimaPg = total/4;
                 if (total % 4 > 0 ){ // Sobran decimales
@@ -255,7 +299,11 @@ module.exports = function(app, swig, gestorBD) {
         let criterio = { autor : req.session.usuario };
         gestorBD.obtenerCanciones(criterio, function(canciones) {
             if (canciones == null) {
-                res.send("Error al listar ");
+                let respuesta = swig.renderFile('views/error.html',
+                    {
+                        texto : "Error al listar"
+                    });
+                res.send(respuesta);
             } else {
                 let respuesta = swig.renderFile('views/bpublicaciones.html',
                     {
