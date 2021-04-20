@@ -44,7 +44,9 @@
 
             },
             error : function (error){
-                $( "#contenedor-principal" ).load("widget-login.html");
+                //$( "#contenedor-principal" ).load("widget-login.html");
+                ("#widget-agregar")
+                    .prepend("<div class='alert alert-danger'>"+ error.responseJSON.error +"</div>");$
             }
         });
     }
